@@ -19,5 +19,6 @@ func main() {
 }
 
 func handler(response http.ResponseWriter, request *http.Request) {
+  fmt.Println(request.Method, request.RequestURI, request.RemoteAddr)
   fmt.Fprintf(response, "test")
 }
