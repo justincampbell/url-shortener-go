@@ -1,1 +1,1 @@
-web: go run web.go -port=$PORT
+web: url-shortener-go -port=$PORT
