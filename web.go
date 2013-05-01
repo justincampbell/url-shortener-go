@@ -9,12 +9,15 @@ import (
 
 var (
   id   = 0
+  idRequest = make(chan bool)
+  idResponse = make(chan int)
   port = flag.String("port", "8080", "port to listen on")
   urls = make(map[string]string)
 )
 
 func init() {
   flag.Parse()
+  go idGenerator()
 }
 
 func main() {
@@ -75,9 +78,17 @@ func shorten(url string) string {
   return token
 }
 
+func idGenerator() {
+  for {
+    <-idRequest
+    id += 1
+    idResponse <- id
+  }
+}
+
 func nextId() int {
-  id = id + 1
-  return id
+  idRequest <- true
+  return <-idResponse
 }
 
 func nextToken() string {
