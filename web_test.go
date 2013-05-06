@@ -26,8 +26,8 @@ func TestExpand(t *testing.T) {
 
 func TestNextId(t *testing.T) {
   reset()
-  assert.Equal(t, 1, nextId())
-  assert.Equal(t, 2, nextId())
+  assert.Equal(t, uint64(1), nextId())
+  assert.Equal(t, uint64(2), nextId())
 }
 
 func TestNextToken(t *testing.T) {

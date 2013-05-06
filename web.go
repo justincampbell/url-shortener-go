@@ -1,6 +1,7 @@
 package main
 
 import (
+  "sync/atomic"
   "flag"
   "fmt"
   "net/http"
@@ -8,7 +9,7 @@ import (
 )
 
 var (
-  id   = 0
+  id uint64 = 0
   idRequest = make(chan bool)
   idResponse = make(chan int)
   port = flag.String("port", "8080", "port to listen on")
@@ -17,7 +18,6 @@ var (
 
 func init() {
   flag.Parse()
-  go idGenerator()
 }
 
 func main() {
@@ -78,17 +78,8 @@ func shorten(url string) string {
   return token
 }
 
-func idGenerator() {
-  for {
-    <-idRequest
-    id += 1
-    idResponse <- id
-  }
-}
-
-func nextId() int {
-  idRequest <- true
-  return <-idResponse
+func nextId() uint64 {
+  return atomic.AddUint64(&id, 1)
 }
 
 func nextToken() string {
@@ -96,6 +87,6 @@ func nextToken() string {
   return tokenize(id)
 }
 
-func tokenize(id int) string {
-  return strconv.Itoa(id)
+func tokenize(id uint64) string {
+  return strconv.FormatUint(id, 10)
 }
