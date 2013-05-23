@@ -1,19 +1,19 @@
 package main
 
 import (
-  "sync/atomic"
   "flag"
   "fmt"
   "net/http"
   "strconv"
+  "sync/atomic"
 )
 
 var (
-  id uint64 = 0
-  idRequest = make(chan bool)
-  idResponse = make(chan int)
-  port = flag.String("port", "8080", "port to listen on")
-  urls = make(map[string]string)
+  id         uint64 = 0
+  idRequest         = make(chan bool)
+  idResponse        = make(chan int)
+  port              = flag.String("port", "8080", "port to listen on")
+  urls              = make(map[string]string)
 )
 
 func init() {
