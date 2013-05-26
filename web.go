@@ -4,16 +4,13 @@ import (
   "flag"
   "fmt"
   "net/http"
-  "strconv"
-  "sync/atomic"
 )
 
 var (
-  id         uint64 = 0
-  idRequest         = make(chan bool)
-  idResponse        = make(chan int)
-  port              = flag.String("port", "8080", "port to listen on")
-  urls              = make(map[string]string)
+  idRequest  = make(chan bool)
+  idResponse = make(chan int)
+  port       = flag.String("port", "8080", "port to listen on")
+  urlStore   = NewUrlStore()
 )
 
 func init() {
@@ -37,7 +34,7 @@ func expandHandler(response http.ResponseWriter, request *http.Request) {
   }
 
   token := request.URL.Path[len("/"):]
-  url := expand(token)
+  url := urlStore.expand(token)
 
   if url == "" {
     http.NotFound(response, request)
@@ -64,29 +61,6 @@ func shortenHandler(response http.ResponseWriter, request *http.Request) {
     return
   }
 
-  token := shorten(url)
+  token := urlStore.shorten(url)
   fmt.Fprintf(response, "/%s", token)
-}
-
-func expand(token string) string {
-  return urls[token]
-}
-
-func shorten(url string) string {
-  token := nextToken()
-  urls[token] = url
-  return token
-}
-
-func nextId() uint64 {
-  return atomic.AddUint64(&id, 1)
-}
-
-func nextToken() string {
-  id := nextId()
-  return tokenize(id)
-}
-
-func tokenize(id uint64) string {
-  return strconv.FormatUint(id, 10)
 }
