@@ -37,6 +37,6 @@ func (store *UrlStore) nextToken() string {
 }
 
 func (store *UrlStore) tokenize(id uint64) string {
-  return strconv.FormatUint(store.id, 10)
+  return strconv.FormatUint(id, 10)
 }
 
