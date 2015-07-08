@@ -5,14 +5,12 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/justincampbell/url-shortener-go/url_store"
+	"github.com/justincampbell/url-shortener-go/urlstore"
 )
 
 var (
-	idRequest  = make(chan bool)
-	idResponse = make(chan int)
-	port       = flag.String("port", "8080", "port to listen on")
-	urlStore   = url_store.NewUrlStore()
+	port     = flag.String("port", "8080", "port to listen on")
+	urlStore = urlstore.NewURLStore()
 )
 
 func init() {
@@ -22,8 +20,12 @@ func init() {
 func main() {
 	http.HandleFunc("/", expandHandler)
 	http.HandleFunc("/shorten", shortenHandler)
+
 	fmt.Println("Listening on", *port)
-	http.ListenAndServe(":"+*port, nil)
+	err := http.ListenAndServe(":"+*port, nil)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func expandHandler(response http.ResponseWriter, request *http.Request) {

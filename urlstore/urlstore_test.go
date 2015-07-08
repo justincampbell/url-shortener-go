@@ -1,4 +1,4 @@
-package url_store
+package urlstore
 
 import (
 	"testing"
@@ -7,14 +7,14 @@ import (
 )
 
 func TestShorten(t *testing.T) {
-	urlStore := NewUrlStore()
+	urlStore := NewURLStore()
 	url := "http://justincampbell.me"
 	token := "1"
 	assert.Equal(t, token, urlStore.Shorten(url))
 }
 
 func TestExpand(t *testing.T) {
-	urlStore := NewUrlStore()
+	urlStore := NewURLStore()
 	url := "http://justincampbell.me"
 	token := "1"
 	urlStore.urls[token] = url
@@ -22,18 +22,18 @@ func TestExpand(t *testing.T) {
 }
 
 func TestNextId(t *testing.T) {
-	urlStore := NewUrlStore()
-	assert.Equal(t, uint64(1), urlStore.nextId())
-	assert.Equal(t, uint64(2), urlStore.nextId())
+	urlStore := NewURLStore()
+	assert.Equal(t, uint64(1), urlStore.nextID())
+	assert.Equal(t, uint64(2), urlStore.nextID())
 }
 
 func TestNextToken(t *testing.T) {
-	urlStore := NewUrlStore()
+	urlStore := NewURLStore()
 	assert.Equal(t, "1", urlStore.nextToken())
 	assert.Equal(t, "2", urlStore.nextToken())
 }
 
 func TestTokenize(t *testing.T) {
-	urlStore := NewUrlStore()
+	urlStore := NewURLStore()
 	assert.Equal(t, "1", urlStore.tokenize(1))
 }
