@@ -1,4 +1,4 @@
-package main
+package url_store
 
 import (
 	"strconv"
@@ -17,11 +17,11 @@ func NewUrlStore() *UrlStore {
 	}
 }
 
-func (store *UrlStore) expand(token string) string {
+func (store *UrlStore) Expand(token string) string {
 	return store.urls[token]
 }
 
-func (store *UrlStore) shorten(url string) string {
+func (store *UrlStore) Shorten(url string) string {
 	token := store.nextToken()
 	store.urls[token] = url
 	return token

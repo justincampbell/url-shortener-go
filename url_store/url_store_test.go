@@ -1,15 +1,16 @@
-package main
+package url_store
 
 import (
-	"github.com/bmizerany/assert"
 	"testing"
+
+	"github.com/bmizerany/assert"
 )
 
 func TestShorten(t *testing.T) {
 	urlStore := NewUrlStore()
 	url := "http://justincampbell.me"
 	token := "1"
-	assert.Equal(t, token, urlStore.shorten(url))
+	assert.Equal(t, token, urlStore.Shorten(url))
 }
 
 func TestExpand(t *testing.T) {
@@ -17,7 +18,7 @@ func TestExpand(t *testing.T) {
 	url := "http://justincampbell.me"
 	token := "1"
 	urlStore.urls[token] = url
-	assert.Equal(t, url, urlStore.expand(token))
+	assert.Equal(t, url, urlStore.Expand(token))
 }
 
 func TestNextId(t *testing.T) {

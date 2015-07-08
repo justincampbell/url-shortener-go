@@ -4,13 +4,15 @@ import (
 	"flag"
 	"fmt"
 	"net/http"
+
+	"github.com/justincampbell/url-shortener-go/url_store"
 )
 
 var (
 	idRequest  = make(chan bool)
 	idResponse = make(chan int)
 	port       = flag.String("port", "8080", "port to listen on")
-	urlStore   = NewUrlStore()
+	urlStore   = url_store.NewUrlStore()
 )
 
 func init() {
@@ -34,7 +36,7 @@ func expandHandler(response http.ResponseWriter, request *http.Request) {
 	}
 
 	token := request.URL.Path[len("/"):]
-	url := urlStore.expand(token)
+	url := urlStore.Expand(token)
 
 	if url == "" {
 		http.NotFound(response, request)
@@ -61,6 +63,6 @@ func shortenHandler(response http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	token := urlStore.shorten(url)
+	token := urlStore.Shorten(url)
 	fmt.Fprintf(response, "/%s", token)
 }
